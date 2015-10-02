@@ -178,12 +178,12 @@ endef
 
 define Package/$(PKG_NAME)/UploadAndInstall
 compile: $(STAGING_DIR_ROOT)/stamp/.$(PKG_NAME)_installed
-	$(SCP) $$(PACKAGE_DIR)/$$(PKG_NAME)_$$(PKG_VERSION)-$$(PKG_RELEASE)_$$(ARCH_PACKAGES).ipk $(1):/tmp
-	$(SSH) $(1) opkg install --force-overwrite /tmp/$(PKG_NAME)_$$(PKG_VERSION)-$$(PKG_RELEASE)_$$(ARCH_PACKAGES).ipk
-	$(SSH) $(1) rm /tmp/$$(PKG_NAME)_$$(PKG_VERSION)-$$(PKG_RELEASE)_$$(ARCH_PACKAGES).ipk
 	$(SCP) $$(PACKAGE_DIR)/lib$$(PKG_NAME)_$$(PKG_VERSION)-$$(PKG_RELEASE)_$$(ARCH_PACKAGES).ipk $(1):/tmp
 	$(SSH) $(1) opkg install --force-overwrite /tmp/lib$(PKG_NAME)_$$(PKG_VERSION)-$$(PKG_RELEASE)_$$(ARCH_PACKAGES).ipk
 	$(SSH) $(1) rm /tmp/lib$$(PKG_NAME)_$$(PKG_VERSION)-$$(PKG_RELEASE)_$$(ARCH_PACKAGES).ipk
+	$(SCP) $$(PACKAGE_DIR)/$$(PKG_NAME)_$$(PKG_VERSION)-$$(PKG_RELEASE)_$$(ARCH_PACKAGES).ipk $(1):/tmp
+	$(SSH) $(1) opkg install --force-overwrite /tmp/$(PKG_NAME)_$$(PKG_VERSION)-$$(PKG_RELEASE)_$$(ARCH_PACKAGES).ipk
+	$(SSH) $(1) rm /tmp/$$(PKG_NAME)_$$(PKG_VERSION)-$$(PKG_RELEASE)_$$(ARCH_PACKAGES).ipk
 endef
 UPLOAD_PATH:=$(or $(PKG_DST), $($(PKG_NAME)_DST))
 $(if $(UPLOAD_PATH), $(eval $(call Package/$(PKG_NAME)/UploadAndInstall, $(UPLOAD_PATH))))
